@@ -20,17 +20,17 @@ typedef struct {
 
 
 typedef struct {
-  zAVLTree *avltree;
-  zAVLNode *curnode;
+  const zAVLTree *avltree;
+  const zAVLNode *curnode;
 } zAVLCursor;
 
 
-extern zAVLTree *zAVLAllocTree (const char *(*getkey)(const void *item));
+extern zAVLTree *zAVLAllocTree (const char *(*getkey)(void const *item));
 extern void zAVLFreeTree (zAVLTree *avltree, void (freeitem)(void *item));
 extern int zAVLInsert (zAVLTree *avltree, void *item);
-extern void *zAVLSearch (const zAVLTree *avltree, const char *key);
+extern void *zAVLSearch (zAVLTree const *avltree, const char *key);
 extern int zAVLDelete (zAVLTree *avltree, const char *key);
-extern void *zAVLFirst (zAVLCursor *avlcursor, zAVLTree *avltree);
+extern void *zAVLFirst (zAVLCursor *avlcursor, zAVLTree const *avltree);
 extern void *zAVLNext (zAVLCursor *avlcursor);
 
 

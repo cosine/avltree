@@ -397,8 +397,10 @@ void iAVLFillVacancy (iAVLNode *origparent, iAVLNode **superparent,
                       iAVLNode *left, iAVLNode *right)
 {
   if (left == NULL) {
-    if (right == NULL)
+    if (right == NULL) {
+      *superparent = NULL;
       return;
+    }
 
     *superparent = right;
     right->parent = origparent;

@@ -397,8 +397,10 @@ void zAVLFillVacancy (zAVLNode *origparent, zAVLNode **superparent,
                       zAVLNode *left, zAVLNode *right)
 {
   if (left == NULL) {
-    if (right == NULL)
+    if (right == NULL) {
+      *superparent = NULL;
       return;
+    }
 
     *superparent = right;
     right->parent = origparent;

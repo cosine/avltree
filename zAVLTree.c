@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "zAVLTree.h"
 
-static AVLNode *AVLCloseSearchNode (const AVLTree *avltree, const char *key);
+static AVLNode *AVLCloseSearchNode (AVLTree const *avltree, const char *key);
 static void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item));
 static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
@@ -22,7 +22,7 @@ static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
  * tree.  On success, a pointer to the malloced AVLTree is returned.  If
  * there was a malloc failure, then NULL is returned.
  */
-AVLTree *AVLAllocTree (const char *(*getkey)(const void *item))
+AVLTree *AVLAllocTree (const char *(*getkey)(void const *item))
 {
   AVLTree *rc;
 
@@ -77,7 +77,7 @@ int AVLInsert (AVLTree *avltree, void *item)
   newnode->right = NULL;
   newnode->parent = NULL;
 
-  if (avltree->top) {
+  if (avltree->top != NULL) {
     node = AVLCloseSearchNode(avltree, newnode->key);
 
     if (!strcmp(node->key, newnode->key)) {
@@ -117,7 +117,7 @@ int AVLInsert (AVLTree *avltree, void *item)
  * Return a pointer to the item with the given key in the AVL tree.  If
  * no such item is in the tree, then NULL is returned.
  */
-void *AVLSearch (const AVLTree *avltree, const char *key)
+void *AVLSearch (AVLTree const *avltree, const char *key)
 {
   AVLNode *node;
 
@@ -169,9 +169,9 @@ int AVLDelete (AVLTree *avltree, const char *key)
  * Initializes an AVLCursor object and returns the item with the lowest
  * key in the AVLTree.
  */
-void *AVLFirst (AVLCursor *avlcursor, AVLTree *avltree)
+void *AVLFirst (AVLCursor *avlcursor, AVLTree const *avltree)
 {
-  AVLNode *avlnode;
+  const AVLNode *avlnode;
 
   avlcursor->avltree = avltree;
 
@@ -196,7 +196,7 @@ void *AVLFirst (AVLCursor *avlcursor, AVLTree *avltree)
  */
 void *AVLNext (AVLCursor *avlcursor)
 {
-  AVLNode *avlnode;
+  const AVLNode *avlnode;
 
   avlnode = avlcursor->curnode;
 
@@ -205,11 +205,6 @@ void *AVLNext (AVLCursor *avlcursor)
          avlnode->left != NULL;
          avlnode = avlnode->left);
     avlcursor->curnode = avlnode;
-    return avlnode->item;
-  }
-
-  if (avlnode->parent && avlnode->parent->left == avlnode) {
-    avlcursor->curnode = avlnode->parent;
     return avlnode->item;
   }
 
@@ -223,7 +218,7 @@ void *AVLNext (AVLCursor *avlcursor)
   }
 
   avlcursor->curnode = avlnode->parent;
-  return avlnode->item;
+  return avlnode->parent->item;
 }
 
 
@@ -232,7 +227,7 @@ void *AVLNext (AVLCursor *avlcursor)
  * Return a pointer to the node closest to the given key.
  * Returns NULL if the AVL tree is empty.
  */
-AVLNode *AVLCloseSearchNode (const AVLTree *avltree, const char *key)
+AVLNode *AVLCloseSearchNode (AVLTree const *avltree, const char *key)
 {
   AVLNode *node;
 
@@ -246,15 +241,15 @@ AVLNode *AVLCloseSearchNode (const AVLTree *avltree, const char *key)
       return node;
 
     if (strcmp(node->key, key) < 0) {
-      if (node->left)
-        node = node->left;
+      if (node->right)
+        node = node->right;
       else
         return node;
     }
 
     else {
-      if (node->right)
-        node = node->right;
+      if (node->left)
+        node = node->left;
       else
         return node;
     }
@@ -297,10 +292,12 @@ void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode)
 
     if (L_DEPTH(child) >= R_DEPTH(child)) {
       avlnode->left = child->right;
-      avlnode->left->parent = avlnode;
+      if (avlnode->left != NULL)
+        avlnode->left->parent = avlnode;
       avlnode->depth = CALC_DEPTH(avlnode);
       child->right = avlnode;
-      child->right->parent = child;
+      if (child->right != NULL)
+        child->right->parent = child;
       child->depth = CALC_DEPTH(child);
       *superparent = child;
       child->parent = origparent;
@@ -309,15 +306,19 @@ void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode)
     else {
       gchild = child->right;
       avlnode->left = gchild->right;
-      avlnode->left->parent = avlnode;
+      if (avlnode->left != NULL)
+        avlnode->left->parent = avlnode;
       avlnode->depth = CALC_DEPTH(avlnode);
       child->right = gchild->left;
-      child->right->parent = child;
+      if (child->right != NULL)
+        child->right->parent = child;
       child->depth = CALC_DEPTH(child);
       gchild->right = avlnode;
-      gchild->right->parent = gchild;
+      if (gchild->right != NULL)
+        gchild->right->parent = gchild;
       gchild->left = child;
-      gchild->left->parent = gchild;
+      if (gchild->left != NULL)
+        gchild->left->parent = gchild;
       gchild->depth = CALC_DEPTH(gchild);
       *superparent = gchild;
       gchild->parent = origparent;
@@ -329,10 +330,12 @@ void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode)
 
     if (R_DEPTH(child) >= L_DEPTH(child)) {
       avlnode->right = child->left;
-      avlnode->right->parent = avlnode;
+      if (avlnode->right != NULL)
+        avlnode->right->parent = avlnode;
       avlnode->depth = CALC_DEPTH(avlnode);
       child->left = avlnode;
-      child->left->parent = child;
+      if (child->left != NULL)
+        child->left->parent = child;
       child->depth = CALC_DEPTH(child);
       *superparent = child;
       child->parent = origparent;
@@ -341,15 +344,19 @@ void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode)
     else {
       gchild = child->left;
       avlnode->right = gchild->left;
-      avlnode->right->parent = avlnode;
+      if (avlnode->right != NULL)
+        avlnode->right->parent = avlnode;
       avlnode->depth = CALC_DEPTH(avlnode);
       child->left = gchild->right;
-      child->left->parent = child;
+      if (child->left != NULL)
+        child->left->parent = child;
       child->depth = CALC_DEPTH(child);
       gchild->left = avlnode;
-      gchild->left->parent = gchild;
+      if (gchild->left != NULL)
+        gchild->left->parent = gchild;
       gchild->right = child;
-      gchild->right->parent = gchild;
+      if (gchild->right != NULL)
+        gchild->right->parent = gchild;
       gchild->depth = CALC_DEPTH(gchild);
       *superparent = gchild;
       gchild->parent = origparent;

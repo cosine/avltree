@@ -72,7 +72,7 @@ PLATFORMS TESTED ON
 
 Version:  Platform:                Comments:
 0.1.0     Linux 2.0.x/glibc 2/gcc  Compiles with no warnings or errors.
-0.1.2     OpenBSD 2.8              Compiles with no warnings or errors.
+0.1.3     OpenBSD 2.8              Compiles with no warnings or errors.
 
 ========================================================================
 
@@ -98,5 +98,9 @@ AVL tree types in sync.  Introduced a third AVL tree type called the
 gAVLTree, which allows generic items to be keys.  Updated parts of this
 README.  Changed avltest to test from the gAVLTree structure instead of
 zAVLTree.
+
+Version 0.1.3 (alpha):
+     Bug fix:  AVLRebalanceNode was not being called when leaf nodes
+were deleted.
 
 ========================================================================

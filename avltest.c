@@ -1,8 +1,8 @@
 /*
  * avltest.c: Program to test the AVL Tree library.
  * Copyright (C) 2001  Michael H. Buselli
- * This is version 0.1.2 (alpha).
- * $Id: avltest.c,v 1.4 2001-03-04 22:17:49 cosine Exp $
+ * This is version 0.1.3 (alpha).
+ * $Id: avltest.c,v 1.5 2001-06-07 06:58:28 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

@@ -2,8 +2,8 @@
 #
 # xAVLTree.c.sh: Source code generator for AVLTree library.
 # Copyright (C) 1998,2001  Michael H. Buselli
-# This is version 0.1.2 (alpha).
-# $Id: xAVLTree.c.sh,v 1.4 2001-06-07 06:50:04 cosine Exp $
+# This is version 0.1.3 (alpha).
+# $Id: xAVLTree.c.sh,v 1.5 2001-06-07 06:58:28 cosine Exp $
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -41,8 +41,8 @@ cat <<__EOF__ | \
 /*
  * ${x}AVLTree.c: Source code for ${x}AVLTrees.
  * Copyright (C) 1998,2001  Michael H. Buselli
- * This is version 0.1.2 (alpha).
- * Generated from \$Id: xAVLTree.c.sh,v 1.4 2001-06-07 06:50:04 cosine Exp $
+ * This is version 0.1.3 (alpha).
+ * Generated from \$Id: xAVLTree.c.sh,v 1.5 2001-06-07 06:58:28 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

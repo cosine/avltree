@@ -1,37 +1,37 @@
-#ifndef _AVLTREE_H_
-#define _AVLTREE_H_
+#ifndef _ZAVLTREE_H_
+#define _ZAVLTREE_H_
 
 
-typedef struct _AVLNode {
+typedef struct _zAVLNode {
   const char *key;
   long depth;
   void *item;
-  struct _AVLNode *parent;
-  struct _AVLNode *left;
-  struct _AVLNode *right;
-} AVLNode;
+  struct _zAVLNode *parent;
+  struct _zAVLNode *left;
+  struct _zAVLNode *right;
+} zAVLNode;
 
 
 typedef struct {
-  AVLNode *top;
+  zAVLNode *top;
   long count;
   const char *(*getkey)(const void *item);
-} AVLTree;
+} zAVLTree;
 
 
 typedef struct {
-  AVLTree *avltree;
-  AVLNode *curnode;
-} AVLCursor;
+  zAVLTree *avltree;
+  zAVLNode *curnode;
+} zAVLCursor;
 
 
-extern AVLTree *AVLAllocTree (const char *(*getkey)(const void *item));
-extern void AVLFreeTree (AVLTree *avltree, void (freeitem)(void *item));
-extern int AVLInsert (AVLTree *avltree, void *item);
-extern void *AVLSearch (const AVLTree *avltree, const char *key);
-extern int AVLDelete (AVLTree *avltree, const char *key);
-extern void *AVLFirst (AVLCursor *avlcursor, AVLTree *avltree);
-extern void *AVLNext (AVLCursor *avlcursor);
+extern zAVLTree *zAVLAllocTree (const char *(*getkey)(const void *item));
+extern void zAVLFreeTree (zAVLTree *avltree, void (freeitem)(void *item));
+extern int zAVLInsert (zAVLTree *avltree, void *item);
+extern void *zAVLSearch (const zAVLTree *avltree, const char *key);
+extern int zAVLDelete (zAVLTree *avltree, const char *key);
+extern void *zAVLFirst (zAVLCursor *avlcursor, zAVLTree *avltree);
+extern void *zAVLNext (zAVLCursor *avlcursor);
 
 
 #endif

@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include "zAVLTree.h"
 
-static AVLNode *AVLCloseSearchNode (AVLTree const *avltree, const char *key);
-static void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode);
-static void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item));
-static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
-                            AVLNode *left, AVLNode *right);
+static zAVLNode *zAVLCloseSearchNode (zAVLTree const *avltree, const char *key);
+static void zAVLRebalanceNode (zAVLTree *avltree, zAVLNode *avlnode);
+static void zAVLFreeBranch (zAVLNode *avlnode, void (freeitem)(void *item));
+static void zAVLFillVacancy (zAVLNode *origparent, zAVLNode **superparent,
+                             zAVLNode *left, zAVLNode *right);
 
 #define MAX(x, y)      ((x) > (y) ? (x) : (y))
 #define MIN(x, y)      ((x) < (y) ? (x) : (y))
@@ -15,18 +15,18 @@ static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
 
 
 /*
- * AVLAllocTree:
+ * zAVLAllocTree:
  * Allocate memory for a new AVL tree and set the getkey function for
  * that tree.  The getkey function should take an item and return a
  * const char * that is to be used for indexing this object in the AVL
- * tree.  On success, a pointer to the malloced AVLTree is returned.  If
+ * tree.  On success, a pointer to the malloced zAVLTree is returned.  If
  * there was a malloc failure, then NULL is returned.
  */
-AVLTree *AVLAllocTree (const char *(*getkey)(void const *item))
+zAVLTree *zAVLAllocTree (const char *(*getkey)(void const *item))
 {
-  AVLTree *rc;
+  zAVLTree *rc;
 
-  rc = malloc(sizeof(AVLTree));
+  rc = malloc(sizeof(zAVLTree));
   if (rc == NULL)
     return NULL;
 
@@ -38,35 +38,35 @@ AVLTree *AVLAllocTree (const char *(*getkey)(void const *item))
 
 
 /*
- * AVLFreeTree:
+ * zAVLFreeTree:
  * Free all memory used by this AVL tree.  If freeitem is not NULL, then
  * it is assumed to be a destructor for the items reference in the AVL
  * tree, and they are deleted as well.
  */
-void AVLFreeTree (AVLTree *avltree, void (freeitem)(void *item))
+void zAVLFreeTree (zAVLTree *avltree, void (freeitem)(void *item))
 {
   if (avltree->top)
-    AVLFreeBranch(avltree->top, freeitem);
+    zAVLFreeBranch(avltree->top, freeitem);
   free(avltree);
 }
 
 
 /*
- * AVLInsert:
+ * zAVLInsert:
  * Create a new node and insert an item there.
  *
  * Returns  0 on success,
  *         -1 on malloc failure,
  *          3 if duplicate key.
  */
-int AVLInsert (AVLTree *avltree, void *item)
+int zAVLInsert (zAVLTree *avltree, void *item)
 {
-  AVLNode *newnode;
-  AVLNode *node;
-  AVLNode *balnode;
-  AVLNode *nextbalnode;
+  zAVLNode *newnode;
+  zAVLNode *node;
+  zAVLNode *balnode;
+  zAVLNode *nextbalnode;
 
-  newnode = malloc(sizeof(AVLNode));
+  newnode = malloc(sizeof(zAVLNode));
   if (newnode == NULL)
     return -1;
 
@@ -78,7 +78,7 @@ int AVLInsert (AVLTree *avltree, void *item)
   newnode->parent = NULL;
 
   if (avltree->top != NULL) {
-    node = AVLCloseSearchNode(avltree, newnode->key);
+    node = zAVLCloseSearchNode(avltree, newnode->key);
 
     if (!strcmp(node->key, newnode->key)) {
       free(newnode);
@@ -99,7 +99,7 @@ int AVLInsert (AVLTree *avltree, void *item)
 
     for (balnode = node->parent; balnode; balnode = nextbalnode) {
       nextbalnode = balnode->parent;
-      AVLRebalanceNode(avltree, balnode);
+      zAVLRebalanceNode(avltree, balnode);
     }
   }
 
@@ -113,15 +113,15 @@ int AVLInsert (AVLTree *avltree, void *item)
 
 
 /*
- * AVLSearch:
+ * zAVLSearch:
  * Return a pointer to the item with the given key in the AVL tree.  If
  * no such item is in the tree, then NULL is returned.
  */
-void *AVLSearch (AVLTree const *avltree, const char *key)
+void *zAVLSearch (zAVLTree const *avltree, const char *key)
 {
-  AVLNode *node;
+  zAVLNode *node;
 
-  node = AVLCloseSearchNode(avltree, key);
+  node = zAVLCloseSearchNode(avltree, key);
 
   if (node && !strcmp(node->key, key))
     return node->item;
@@ -131,18 +131,18 @@ void *AVLSearch (AVLTree const *avltree, const char *key)
 
 
 /*
- * AVLDelete:
+ * zAVLDelete:
  * Deletes the node with the given key.  Does not delete the item at
  * that key.  Returns 0 on success and -1 if a node with the given key
  * does not exist.
  */
-int AVLDelete (AVLTree *avltree, const char *key)
+int zAVLDelete (zAVLTree *avltree, const char *key)
 {
-  AVLNode *avlnode;
-  AVLNode *origparent;
-  AVLNode **superparent;
+  zAVLNode *avlnode;
+  zAVLNode *origparent;
+  zAVLNode **superparent;
 
-  avlnode = AVLCloseSearchNode(avltree, key);
+  avlnode = zAVLCloseSearchNode(avltree, key);
   if (avlnode == NULL || strcmp(avlnode->key, key))
     return -1;
 
@@ -157,7 +157,7 @@ int AVLDelete (AVLTree *avltree, const char *key)
   else
     superparent = &(avltree->top);
 
-  AVLFillVacancy(origparent, superparent, avlnode->left, avlnode->right);
+  zAVLFillVacancy(origparent, superparent, avlnode->left, avlnode->right);
   free(avlnode);
   avltree->count--;
   return 0;
@@ -165,13 +165,13 @@ int AVLDelete (AVLTree *avltree, const char *key)
 
 
 /*
- * AVLFirst:
- * Initializes an AVLCursor object and returns the item with the lowest
- * key in the AVLTree.
+ * zAVLFirst:
+ * Initializes an zAVLCursor object and returns the item with the lowest
+ * key in the zAVLTree.
  */
-void *AVLFirst (AVLCursor *avlcursor, AVLTree const *avltree)
+void *zAVLFirst (zAVLCursor *avlcursor, zAVLTree const *avltree)
 {
-  const AVLNode *avlnode;
+  const zAVLNode *avlnode;
 
   avlcursor->avltree = avltree;
 
@@ -189,14 +189,14 @@ void *AVLFirst (AVLCursor *avlcursor, AVLTree const *avltree)
 
 
 /*
- * AVLNext:
- * Called after an AVLFirst() call, this returns the item with the least
- * key that is greater than the last item returned either by AVLFirst()
+ * zAVLNext:
+ * Called after an zAVLFirst() call, this returns the item with the least
+ * key that is greater than the last item returned either by zAVLFirst()
  * or a previous invokation of this function.
  */
-void *AVLNext (AVLCursor *avlcursor)
+void *zAVLNext (zAVLCursor *avlcursor)
 {
-  const AVLNode *avlnode;
+  const zAVLNode *avlnode;
 
   avlnode = avlcursor->curnode;
 
@@ -223,13 +223,13 @@ void *AVLNext (AVLCursor *avlcursor)
 
 
 /*
- * AVLCloseSearchNode:
+ * zAVLCloseSearchNode:
  * Return a pointer to the node closest to the given key.
  * Returns NULL if the AVL tree is empty.
  */
-AVLNode *AVLCloseSearchNode (AVLTree const *avltree, const char *key)
+zAVLNode *zAVLCloseSearchNode (zAVLTree const *avltree, const char *key)
 {
-  AVLNode *node;
+  zAVLNode *node;
 
   node = avltree->top;
 
@@ -258,7 +258,7 @@ AVLNode *AVLCloseSearchNode (AVLTree const *avltree, const char *key)
 
 
 /*
- * AVLRebalanceNode:
+ * zAVLRebalanceNode:
  * Rebalances the AVL tree if one side becomes too heavy.  This function
  * assumes that both subtrees are AVL trees with consistant data.  This
  * function has the additional side effect of recalculating the depth of
@@ -266,13 +266,13 @@ AVLNode *AVLCloseSearchNode (AVLTree const *avltree, const char *key)
  * function, if a rebalance takes place, the top of this subtree is no
  * longer going to be the same node.
  */
-void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode)
+void zAVLRebalanceNode (zAVLTree *avltree, zAVLNode *avlnode)
 {
   long depthdiff;
-  AVLNode *child;
-  AVLNode *gchild;
-  AVLNode *origparent;
-  AVLNode **superparent;
+  zAVLNode *child;
+  zAVLNode *gchild;
+  zAVLNode *origparent;
+  zAVLNode **superparent;
 
   origparent = avlnode->parent;
 
@@ -370,18 +370,18 @@ void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode)
 
 
 /*
- * AVLFreeBranch:
+ * zAVLFreeBranch:
  * Free memory used by this node and its item.  If the freeitem argument
  * is not NULL, then that function is called on the items to free their
  * memory as well.  In other words, the freeitem function is a
  * destructor for the items in the tree.
  */
-void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item))
+void zAVLFreeBranch (zAVLNode *avlnode, void (freeitem)(void *item))
 {
   if (avlnode->left)
-    AVLFreeBranch(avlnode->left, freeitem);
+    zAVLFreeBranch(avlnode->left, freeitem);
   if (avlnode->right)
-    AVLFreeBranch(avlnode->right, freeitem);
+    zAVLFreeBranch(avlnode->right, freeitem);
   if (freeitem)
     freeitem(avlnode->item);
   free(avlnode);
@@ -389,12 +389,12 @@ void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item))
 
 
 /*
- * AVLFillVacancy:
+ * zAVLFillVacancy:
  * Given a vacancy in the AVL tree by it's parent, children, and parent
  * component pointer, fill that vacancy.
  */
-void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
-                     AVLNode *left, AVLNode *right)
+void zAVLFillVacancy (zAVLNode *origparent, zAVLNode **superparent,
+                      zAVLNode *left, zAVLNode *right)
 {
   if (left == NULL) {
     if (right == NULL)
@@ -412,14 +412,14 @@ void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
   else if (left->depth >= right->depth) {
     *superparent = left;
     left->parent = origparent;
-    AVLFillVacancy(left, &(left->right), left->right, right);
+    zAVLFillVacancy(left, &(left->right), left->right, right);
     left->depth = CALC_DEPTH(left);
   }
 
   else {
     *superparent = right;
     right->parent = origparent;
-    AVLFillVacancy(right, &(right->left), right->left, left);
+    zAVLFillVacancy(right, &(right->left), right->left, left);
     right->depth = CALC_DEPTH(right);
   }
 }

@@ -2,7 +2,6 @@
 #include "zAVLTree.h"
 
 static AVLNode *AVLCloseSearchNode (const AVLTree *avltree, const char *key);
-static void AVLDeleteNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item));
 static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
@@ -165,13 +164,66 @@ int AVLDelete (AVLTree *avltree, const char *key)
 }
 
 
+/*
+ * AVLFirst:
+ * Initializes an AVLCursor object and returns the item with the lowest
+ * key in the AVLTree.
+ */
 void *AVLFirst (AVLCursor *avlcursor, AVLTree *avltree)
 {
+  AVLNode *avlnode;
 
+  avlcursor->avltree = avltree;
+
+  if (avltree->top == NULL) {
+    avlcursor->curnode = NULL;
+    return NULL;
+  }
+
+  for (avlnode = avltree->top;
+       avlnode->left != NULL;
+       avlnode = avlnode->left);
+  avlcursor->curnode = avlnode;
+  return avlnode->item;
 }
+
+
+/*
+ * AVLNext:
+ * Called after an AVLFirst() call, this returns the item with the least
+ * key that is greater than the last item returned either by AVLFirst()
+ * or a previous invokation of this function.
+ */
 void *AVLNext (AVLCursor *avlcursor)
 {
+  AVLNode *avlnode;
 
+  avlnode = avlcursor->curnode;
+
+  if (avlnode->right != NULL) {
+    for (avlnode = avlnode->right;
+         avlnode->left != NULL;
+         avlnode = avlnode->left);
+    avlcursor->curnode = avlnode;
+    return avlnode->item;
+  }
+
+  if (avlnode->parent && avlnode->parent->left == avlnode) {
+    avlcursor->curnode = avlnode->parent;
+    return avlnode->item;
+  }
+
+  while (avlnode->parent && avlnode->parent->left != avlnode) {
+    avlnode = avlnode->parent;
+  }
+
+  if (avlnode->parent == NULL) {
+    avlcursor->curnode = NULL;
+    return NULL;
+  }
+
+  avlcursor->curnode = avlnode->parent;
+  return avlnode->item;
 }
 
 
@@ -207,12 +259,6 @@ AVLNode *AVLCloseSearchNode (const AVLTree *avltree, const char *key)
         return node;
     }
   }
-}
-
-
-void AVLDeleteNode (AVLTree *avltree, AVLNode *avlnode)
-{
-
 }
 
 

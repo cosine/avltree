@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "iAVLTree.h"
 
-static AVLNode *AVLCloseSearchNode (AVLTree *avltree, long key);
+static AVLNode *AVLCloseSearchNode (const AVLTree *avltree, long key);
 static void AVLDeleteNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item));

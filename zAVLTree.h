@@ -15,7 +15,7 @@ typedef struct _AVLNode {
 typedef struct {
   AVLNode *top;
   long count;
-  (const char *)(*getkey)(const void *item);
+  const char *(*getkey)(const void *item);
 } AVLTree;
 
 
@@ -25,7 +25,7 @@ typedef struct {
 } AVLCursor;
 
 
-extern AVLTree *AVLAllocTree ((const char *)(*getkey)(const void *item));
+extern AVLTree *AVLAllocTree (const char *(*getkey)(const void *item));
 extern void AVLFreeTree (AVLTree *avltree, void (freeitem)(void *item));
 extern int AVLInsert (AVLTree *avltree, void *item);
 extern void *AVLSearch (const AVLTree *avltree, const char *key);

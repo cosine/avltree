@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "zAVLTree.h"
 
-static AVLNode *AVLCloseSearchNode (AVLTree *avltree, const char *key);
+static AVLNode *AVLCloseSearchNode (const AVLTree *avltree, const char *key);
 static void AVLDeleteNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item));
@@ -23,7 +23,7 @@ static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
  * tree.  On success, a pointer to the malloced AVLTree is returned.  If
  * there was a malloc failure, then NULL is returned.
  */
-AVLTree *AVLAllocTree ((const char *)(*getkey)(const void *item))
+AVLTree *AVLAllocTree (const char *(*getkey)(const void *item))
 {
   AVLTree *rc;
 

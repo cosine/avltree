@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include "iAVLTree.h"
 
-static AVLNode *AVLCloseSearchNode (const AVLTree *avltree, long key);
-static void AVLDeleteNode (AVLTree *avltree, AVLNode *avlnode);
+static AVLNode *AVLCloseSearchNode (AVLTree const *avltree, long key);
 static void AVLRebalanceNode (AVLTree *avltree, AVLNode *avlnode);
 static void AVLFreeBranch (AVLNode *avlnode, void (freeitem)(void *item));
 static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
@@ -23,7 +22,7 @@ static void AVLFillVacancy (AVLNode *origparent, AVLNode **superparent,
  * On success, a pointer to the malloced AVLTree is returned.  If there
  * was a malloc failure, then NULL is returned.
  */
-AVLTree *AVLAllocTree (long (*getkey)(const void *item))
+AVLTree *AVLAllocTree (long (*getkey)(void const *item))
 {
   AVLTree *rc;
 
@@ -118,7 +117,7 @@ int AVLInsert (AVLTree *avltree, void *item)
  * Return a pointer to the item with the given key in the AVL tree.  If
  * no such item is in the tree, then NULL is returned.
  */
-void *AVLSearch (const AVLTree *avltree, long key)
+void *AVLSearch (AVLTree const *avltree, long key)
 {
   AVLNode *node;
 
@@ -165,13 +164,66 @@ int AVLDelete (AVLTree *avltree, long key)
 }
 
 
-void *AVLFirst (AVLCursor *avlcursor, AVLTree *avltree)
+/*
+ * AVLFirst:
+ * Initializes an AVLCursor object and returns the item with the lowest
+ * key in the AVLTree.
+ */
+void *AVLFirst (AVLCursor *avlcursor, AVLTree const *avltree)
 {
+  const AVLNode *avlnode;
 
+  avlcursor->avltree = avltree;
+
+  if (avltree->top == NULL) {
+    avlcursor->curnode = NULL;
+    return NULL;
+  }
+
+  for (avlnode = avltree->top;
+       avlnode->left != NULL;
+       avlnode = avlnode->left);
+  avlcursor->curnode = avlnode;
+  return avlnode->item;
 }
+
+
+/*
+ * AVLNext:
+ * Called after an AVLFirst() call, this returns the item with the least
+ * key that is greater than the last item returned either by AVLFirst()
+ * or a previous invokation of this function.
+ */
 void *AVLNext (AVLCursor *avlcursor)
 {
+  const AVLNode *avlnode;
 
+  avlnode = avlcursor->curnode;
+
+  if (avlnode->right != NULL) {
+    for (avlnode = avlnode->right;
+         avlnode->left != NULL;
+         avlnode = avlnode->left);
+    avlcursor->curnode = avlnode;
+    return avlnode->item;
+  }
+
+  if (avlnode->parent && avlnode->parent->left == avlnode) {
+    avlcursor->curnode = avlnode->parent;
+    return avlnode->item;
+  }
+
+  while (avlnode->parent && avlnode->parent->left != avlnode) {
+    avlnode = avlnode->parent;
+  }
+
+  if (avlnode->parent == NULL) {
+    avlcursor->curnode = NULL;
+    return NULL;
+  }
+
+  avlcursor->curnode = avlnode->parent;
+  return avlnode->item;
 }
 
 
@@ -180,7 +232,7 @@ void *AVLNext (AVLCursor *avlcursor)
  * Return a pointer to the node closest to the given key.
  * Returns NULL if the AVL tree is empty.
  */
-AVLNode *AVLCloseSearchNode (const AVLTree *avltree, long key)
+AVLNode *AVLCloseSearchNode (AVLTree const *avltree, long key)
 {
   AVLNode *node;
 
@@ -207,12 +259,6 @@ AVLNode *AVLCloseSearchNode (const AVLTree *avltree, long key)
         return node;
     }
   }
-}
-
-
-void AVLDeleteNode (AVLTree *avltree, AVLNode *avlnode)
-{
-
 }
 
 

@@ -1,6 +1,6 @@
 /*
  * zAVLTree.c: Source code for the AVLTree library (string version).
- * Copyright (C) 1998  Michael H. Buselli
+ * Copyright (C) 1998,2001  Michael H. Buselli
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -18,14 +18,16 @@
  *
  * The author of this library can be reached at the following address:
  * Michael H. Buselli
- * 4334 N. Hazel St. #515
- * Chicago, IL  60613-1456
+ * 30051 N. Waukegan Rd. Apt. 103
+ * Lake Bluff, IL  60044-5412
  *
- * Or you can send email to <cosine@tezcat.com>.
+ * Or you can send email to <cosine@cosine.org>.
  * The official web page for this product is:
- * http://www.tezcat.com/~cosine/pub/AVLTree/
+ * http://www.cosine.org/project/AVLTree/
  *
  * This is version 0.1.0 (alpha).
+ *
+ * $Id: zAVLTree.c,v 1.9 2001-03-04 04:34:29 cosine Exp $
  */
 
 #include <stdlib.h>

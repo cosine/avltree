@@ -1,0 +1,78 @@
+========================================================================
+
+WHAT IS AVLTREE?
+
+AVLTree is a small implimentation of AVL trees for the C programming
+language.  It is distributed under the Library Gnu Public License (see
+the file LICENSE for details).
+
+This library does the basic stuff.  It allows for inserts, searches, and
+deletes in O(log n) time.  It also provides an interface to iterate
+through your entire AVL tree, in order by key, in O(n) time (the calls
+that allow the iterating take constant amortized time).
+
+If you find any bugs, or if you have any comments or suggestions, send
+them to <cosine@tezcat.com>.  Or you can send me mail via the USPS to:
+
+Michael H. Buselli
+4334 N. Hazel St. #515
+Chicago, IL  60613-1456
+
+But before sending in a bug report, please check the AVLTree website
+http://www.cosine.com/~cosine/pub/AVLTree/ to make sure that you have
+the most recent version of AVLTree.  I won't be too pleased to get a bug
+report on a version that is over a month obsolete, especially if I've
+already fixed the bug in a released version.
+
+========================================================================
+
+COMPILING AND INSTALLING
+
+You're on your own for this version here.  I compiled the libraries into
+object files like this:
+
+gcc -Wall -ggdb -c iAVLTree.c
+gcc -Wall -ggdb -c zAVLTree.c
+
+You can do the same, however if you know what the flags mean you are
+most welcome to change things around to suit your use.  There ought to
+be a nice Makefile to automatically build these as static or dynamic
+libraries in the future.
+
+========================================================================
+
+USING THE LIBRARIES
+
+There are no real usage documents yet.  Look at iAVLTree.h and
+zAVLTree.h (you need to include these headers in your programs to use
+the library) to see what functions and structures are available.  Then
+look at the comments in iAVLTree.c and zAVLTree.c to get better
+descriptions of how the functions declared in the header files work, and
+how error conditions are passed back to you.
+
+If anyone wants to write good documentation for me, I'd most appriciate
+it.  It shouldn't take too long, but I just haven't gotten around to it.
+When I do, I will produce text and html versions.
+
+========================================================================
+
+PLATFORMS TESTED ON
+
+Platform:                     Comments:
+Linux 2.0.x/glibc 2/gcc       Compiles with no warnings or errors.
+
+========================================================================
+
+HISTORY
+
+Version 0.1.0 (alpha):
+     This is the initial alpha version of AVLTree.  It's already fully
+functional for many applications, including the one that I developed it
+for.  I've only tested it on my Linux 2.0.35/glibc2 system, so I have no
+idea what it will do anywhere else so far.  Let me know if you have good
+results or bad if you try a platform that I don't mention above.
+     This version is considered alpha because it does not yet contain
+all of the features that I plan for version 1.0.0.  It should not
+contain any bugs as it is.
+
+========================================================================

@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2001  Michael H. Buselli
-# This is version 0.1.1 (alpha).
-# $Id: Makefile,v 1.4 2001-03-04 21:14:02 cosine Exp $
+# This is version 0.1.2 (alpha).
+# $Id: Makefile,v 1.5 2001-03-04 21:15:47 cosine Exp $
 #
 # This file is released under the terms given in the LICENSE file
 # included in this package.

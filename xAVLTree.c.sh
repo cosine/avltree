@@ -3,7 +3,7 @@
 # xAVLTree.c.sh: Source code generator for AVLTree library.
 # Copyright (C) 1998,2001  Michael H. Buselli
 # This is version 0.1.2 (alpha).
-# $Id: xAVLTree.c.sh,v 1.1 2001-03-04 20:53:01 cosine Exp $
+# $Id: xAVLTree.c.sh,v 1.2 2001-03-04 21:14:02 cosine Exp $
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -42,6 +42,7 @@ cat <<__EOF__ | \
  * ${x}AVLTree.c: Source code for ${x}AVLTrees.
  * Copyright (C) 1998,2001  Michael H. Buselli
  * This is version 0.1.2 (alpha).
+ * Generated from $Id: xAVLTree.c.sh,v 1.2 2001-03-04 21:14:02 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -95,7 +96,13 @@ static void ${x}AVLFillVacancy (${x}AVLTree *avltree,
  * On success, a pointer to the malloced AVLTree is returned.  If there
  * was a malloc failure, then NULL is returned.
  */
+---- gAVLbegin ----
 ${x}AVLTree *${x}AVLAllocTree (${x}AVLKey (*getkey)(void const *item))
+---- gAVLend ----
+++++ gAVLbegin ++++
+${x}AVLTree *${x}AVLAllocTree (${x}AVLKey (*getkey)(void const *item),
+        ${x}AVLCompare cmp)
+++++ gAVLend ++++
 {
   ${x}AVLTree *rc;
 
@@ -106,6 +113,9 @@ ${x}AVLTree *${x}AVLAllocTree (${x}AVLKey (*getkey)(void const *item))
   rc->top = NULL;
   rc->count = 0;
   rc->getkey = getkey;
+++++ gAVLbegin ++++
+  rc->cmp = cmp;
+++++ gAVLend ++++
   return rc;
 }
 

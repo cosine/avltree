@@ -3,7 +3,7 @@
 # xAVLTree.h.sh: Header file generator for AVLTree library.
 # Copyright (C) 1998,2001  Michael H. Buselli
 # This is version 0.1.2 (alpha).
-# $Id: xAVLTree.h.sh,v 1.2 2001-03-04 20:53:01 cosine Exp $
+# $Id: xAVLTree.h.sh,v 1.3 2001-03-04 21:14:02 cosine Exp $
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -42,6 +42,7 @@ cat <<__EOF__ | \
  * ${x}AVLTree.h: Header file for ${x}AVLTrees.
  * Copyright (C) 1998,2001  Michael H. Buselli
  * This is version 0.1.2 (alpha).
+ * Generated from $Id: xAVLTree.h.sh,v 1.3 2001-03-04 21:14:02 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -96,7 +97,7 @@ typedef const void *gAVLKey;
  * by default perform some sanity checks at the cost of performance.
  * Turn the sanity checks off in avlconfig.h by defining AVL_NO_SANITY.
  */
-typedef int (*AVLCompare)(gAVLKey a, gAVLKey b);
+typedef int (*gAVLCompare)(gAVLKey a, gAVLKey b);
 
 /* Comparison function for gAVLTrees is defined by the user for each
  * individual gAVLTree.
@@ -120,7 +121,7 @@ typedef struct {
   long count;
   ${x}AVLKey (*getkey)(const void *item);
 ++++ gAVLbegin ++++
-  AVLCompare cmp;
+  ${x}AVLCompare cmp;
 ++++ gAVLend ++++
 } ${x}AVLTree;
 
@@ -135,8 +136,8 @@ typedef struct {
 extern ${x}AVLTree *${x}AVLAllocTree (${x}AVLKey (*getkey)(void const *item));
 ---- gAVLend ----
 ++++ gAVLbegin ++++
-extern ${x}AVLTree *${x}AVLAllocTree\
- (${x}AVLKey (*getkey)(void const *item), AVLCompare cmp);
+extern ${x}AVLTree *${x}AVLAllocTree (${x}AVLKey (*getkey)(void const *item),
+        ${x}AVLCompare cmp);
 ++++ gAVLend ++++
 extern void ${x}AVLFreeTree\
  (${x}AVLTree *avltree, void (freeitem)(void *item));

@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2001  Michael H. Buselli
 # This is version 0.1.1 (alpha).
-# $Id: Makefile,v 1.3 2001-03-04 20:53:01 cosine Exp $
+# $Id: Makefile,v 1.4 2001-03-04 21:14:02 cosine Exp $
 #
 # This file is released under the terms given in the LICENSE file
 # included in this package.
@@ -15,7 +15,8 @@ LDFLAGS =
 
 IAVLFILES = iAVLTree.h iAVLTree.o
 ZAVLFILES = zAVLTree.h zAVLTree.o
-GAVLFILES = gAVLTree.h
+GAVLFILES = gAVLTree.h gAVLTree.o
+TRANSFILES = iAVLTree.c zAVLTree.c gAVLTree.c
 TESTFILES = avltest
 
 FILES = $(IAVLFILES) $(ZAVLFILES) $(GAVLFILES) $(TESTFILES)
@@ -23,7 +24,7 @@ FILES = $(IAVLFILES) $(ZAVLFILES) $(GAVLFILES) $(TESTFILES)
 all: $(FILES)
 
 clean:
-	rm -f $(FILES)
+	rm -f $(FILES) $(TRANSFILES)
 
 # The following rules generate the header files.
 iAVLTree.h: xAVLTree.h.sh

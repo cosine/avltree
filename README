@@ -75,7 +75,7 @@ results or bad if you try a platform that I don't mention above.
 all of the features that I plan for version 1.0.0.  It should not
 contain any bugs as it is.
 
-Version 0.1.1 (alpha):
+Version 0.1.1 (alpha) 2001-03-04:
      Updated contact information.  Added avltest.c for testing and
 demonstrating functions and usage.  Added a dumb Makefile.
 

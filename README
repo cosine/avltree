@@ -28,31 +28,43 @@ already fixed the bug in a released version.
 
 COMPILING AND INSTALLING
 
-You're on your own for this version here.  I compiled the libraries into
-object files like this:
+You're on your own for this version here.  I have provided a dumb
+Makefile that will make three header files, three object files, and a
+test program called avltest that tests zAVLTree.o.  It may not work on
+your system as is, so please edit it as necessary.
 
-gcc -Wall -ggdb -c iAVLTree.c
-gcc -Wall -ggdb -c zAVLTree.c
-
-You can do the same, however if you know what the flags mean you are
-most welcome to change things around to suit your use.  There ought to
-be a nice Makefile to automatically build these as static or dynamic
-libraries in the future.
+There ought to be a better Makefile to automatically build these
+libraries as static or dynamic libraries in the future.
 
 ========================================================================
 
 USING THE LIBRARIES
 
-There are no real usage documents yet.  Look at iAVLTree.h and
-zAVLTree.h (you need to include these headers in your programs to use
-the library) to see what functions and structures are available.  Then
-look at the comments in iAVLTree.c and zAVLTree.c to get better
-descriptions of how the functions declared in the header files work, and
-how error conditions are passed back to you.
+There are no real usage documents yet.  After you build the header files
+(*.h) and the source code files (*.c), you can use them as
+documentation.  The header files reveal most of the API that you need to
+use while the source code files contain comments above each function
+revealing how it works and what it does.  Do pay close attention to how
+error codes are passed back to you.  You can also review avltest.c as an
+example of how to use the gAVLTree type, which is the most complicated
+of the three types provided here.
 
-If anyone wants to write good documentation for me, I'd most appriciate
-it.  It shouldn't take too long, but I just haven't gotten around to it.
-When I do, I will produce text and html versions.
+When I get around to making better documentation, I hope to provide man
+page style and html formats.
+
+There are three types of AVL trees provided in this library.  The
+algorithms are all the same in their cores, but the front ends differ
+for different key types.
+
+If you wish to use integer keys then use iAVLTree.  If your keys are
+strings then use zAVLTree, and for any other type of key you must use
+gAVLTree.  Technically you can use integers and strings with gAVLTree,
+but by splitting out string and integer types I was hoping to get better
+performance for those types as well as provide a slightly easier to use
+API.
+
+The performance gain for using zAVLTree instead of gAVLTree is probably
+not worth keeping it in future versions.
 
 ========================================================================
 
@@ -60,7 +72,7 @@ PLATFORMS TESTED ON
 
 Version:  Platform:                Comments:
 0.1.0     Linux 2.0.x/glibc 2/gcc  Compiles with no warnings or errors.
-0.1.2     OpenBSD 2.8/gcc          Compiles with no warnings or errors.
+0.1.2     OpenBSD 2.8              Compiles with no warnings or errors.
 
 ========================================================================
 
@@ -83,6 +95,8 @@ demonstrating functions and usage.  Added a dumb Makefile.
 Version 0.1.2 (alpha) 2001-03-04:
      Merged code files into generator programs to keep code for the two
 AVL tree types in sync.  Introduced a third AVL tree type called the
-gAVLTree, which allows generic items to be keys.
+gAVLTree, which allows generic items to be keys.  Updated parts of this
+README.  Changed avltest to test from the gAVLTree structure instead of
+zAVLTree.
 
 ========================================================================

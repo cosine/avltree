@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2001  Michael H. Buselli
 # This is version 0.1.3 (alpha).
-# $Id: Makefile,v 1.7 2001-06-07 06:58:28 cosine Exp $
+# $Id: Makefile,v 1.8 2001-07-05 04:18:46 cosine Exp $
 #
 # This file is released under the terms given in the LICENSE file
 # included in this package.
@@ -54,6 +54,9 @@ iAVLTree.o: iAVLTree.c iAVLTree.h
 
 zAVLTree.o: zAVLTree.c zAVLTree.h
 	$(CC) $(CFLAGS) -o zAVLTree.o -c zAVLTree.c
+
+gAVLTree.o: gAVLTree.c gAVLTree.h
+	$(CC) $(CFLAGS) -o gAVLTree.o -c gAVLTree.c
 
 avltest.o: avltest.c gAVLTree.h
 	$(CC) $(CFLAGS) -o avltest.o -c avltest.c

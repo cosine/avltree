@@ -12,15 +12,15 @@ through your entire AVL tree, in order by key, in O(n) time (the calls
 that allow the iterating take constant amortized time).
 
 If you find any bugs, or if you have any comments or suggestions, send
-them to <cosine@tezcat.com>.  Or you can send me mail via the USPS to:
+them to <cosine@cosine.org>.  Or you can send me mail via the USPS to:
 
 Michael H. Buselli
-4334 N. Hazel St. #515
-Chicago, IL  60613-1456
+30051 N. Waukegan Rd. Apt. 103
+Lake Bluff, IL  60044-5412
 
 But before sending in a bug report, please check the AVLTree website
-http://www.cosine.com/~cosine/pub/AVLTree/ to make sure that you have
-the most recent version of AVLTree.  I won't be too pleased to get a bug
+http://www.cosine.com/project/AVLTree/ to make sure that you have the
+most recent version of AVLTree.  I won't be too pleased to get a bug
 report on a version that is over a month obsolete, especially if I've
 already fixed the bug in a released version.
 
@@ -74,5 +74,9 @@ results or bad if you try a platform that I don't mention above.
      This version is considered alpha because it does not yet contain
 all of the features that I plan for version 1.0.0.  It should not
 contain any bugs as it is.
+
+Version 0.1.1 (alpha):
+     Updated contact information.  Added avltest.c for testing and
+demonstrating functions and usage.  Added a dumb Makefile.
 
 ========================================================================

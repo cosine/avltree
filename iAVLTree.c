@@ -4,7 +4,8 @@
 static iAVLNode *iAVLCloseSearchNode (iAVLTree const *avltree, long key);
 static void iAVLRebalanceNode (iAVLTree *avltree, iAVLNode *avlnode);
 static void iAVLFreeBranch (iAVLNode *avlnode, void (freeitem)(void *item));
-static void iAVLFillVacancy (iAVLNode *origparent, iAVLNode **superparent,
+static void iAVLFillVacancy (iAVLTree *avltree,
+                             iAVLNode *origparent, iAVLNode **superparent,
                              iAVLNode *left, iAVLNode *right);
 
 #define MAX(x, y)      ((x) > (y) ? (x) : (y))
@@ -157,7 +158,8 @@ int iAVLDelete (iAVLTree *avltree, long key)
   else
     superparent = &(avltree->top);
 
-  iAVLFillVacancy(origparent, superparent, avlnode->left, avlnode->right);
+  iAVLFillVacancy(avltree, origparent, superparent,
+                  avlnode->left, avlnode->right);
   free(avlnode);
   avltree->count--;
   return 0;
@@ -393,9 +395,14 @@ void iAVLFreeBranch (iAVLNode *avlnode, void (freeitem)(void *item))
  * Given a vacancy in the AVL tree by it's parent, children, and parent
  * component pointer, fill that vacancy.
  */
-void iAVLFillVacancy (iAVLNode *origparent, iAVLNode **superparent,
+void iAVLFillVacancy (iAVLTree *avltree,
+                      iAVLNode *origparent, iAVLNode **superparent,
                       iAVLNode *left, iAVLNode *right)
 {
+  iAVLNode *avlnode;
+  iAVLNode *balnode;
+  iAVLNode *nextbalnode;
+
   if (left == NULL) {
     if (right == NULL) {
       *superparent = NULL;
@@ -404,24 +411,33 @@ void iAVLFillVacancy (iAVLNode *origparent, iAVLNode **superparent,
 
     *superparent = right;
     right->parent = origparent;
-  }
-
-  else if (right == NULL) {
-    *superparent = left;
-    left->parent = origparent;
-  }
-
-  else if (left->depth >= right->depth) {
-    *superparent = left;
-    left->parent = origparent;
-    iAVLFillVacancy(left, &(left->right), left->right, right);
-    left->depth = CALC_DEPTH(left);
+    balnode = origparent;
   }
 
   else {
-    *superparent = right;
-    right->parent = origparent;
-    iAVLFillVacancy(right, &(right->left), right->left, left);
-    right->depth = CALC_DEPTH(right);
+    for (avlnode = left; avlnode->right != NULL; avlnode = avlnode->right);
+
+    if (avlnode == left) {
+      balnode = avlnode;
+    }
+    else {
+      balnode = avlnode->parent;
+      balnode->right = avlnode->left;
+      if (balnode->right != NULL)
+        balnode->right->parent = balnode;
+      avlnode->left = left;
+      left->parent = avlnode;
+    }
+
+    avlnode->right = right;
+    if (right != NULL)
+      right->parent = avlnode;
+    *superparent = avlnode;
+    avlnode->parent = origparent;
+  }
+
+  for (; balnode; balnode = nextbalnode) {
+    nextbalnode = balnode->parent;
+    iAVLRebalanceNode(avltree, balnode);
   }
 }

@@ -4,7 +4,8 @@
 static zAVLNode *zAVLCloseSearchNode (zAVLTree const *avltree, const char *key);
 static void zAVLRebalanceNode (zAVLTree *avltree, zAVLNode *avlnode);
 static void zAVLFreeBranch (zAVLNode *avlnode, void (freeitem)(void *item));
-static void zAVLFillVacancy (zAVLNode *origparent, zAVLNode **superparent,
+static void zAVLFillVacancy (zAVLTree *avltree,
+                             zAVLNode *origparent, zAVLNode **superparent,
                              zAVLNode *left, zAVLNode *right);
 
 #define MAX(x, y)      ((x) > (y) ? (x) : (y))
@@ -157,7 +158,8 @@ int zAVLDelete (zAVLTree *avltree, const char *key)
   else
     superparent = &(avltree->top);
 
-  zAVLFillVacancy(origparent, superparent, avlnode->left, avlnode->right);
+  zAVLFillVacancy(avltree, origparent, superparent,
+                  avlnode->left, avlnode->right);
   free(avlnode);
   avltree->count--;
   return 0;
@@ -393,9 +395,14 @@ void zAVLFreeBranch (zAVLNode *avlnode, void (freeitem)(void *item))
  * Given a vacancy in the AVL tree by it's parent, children, and parent
  * component pointer, fill that vacancy.
  */
-void zAVLFillVacancy (zAVLNode *origparent, zAVLNode **superparent,
+void zAVLFillVacancy (zAVLTree *avltree,
+                      zAVLNode *origparent, zAVLNode **superparent,
                       zAVLNode *left, zAVLNode *right)
 {
+  zAVLNode *avlnode;
+  zAVLNode *balnode;
+  zAVLNode *nextbalnode;
+
   if (left == NULL) {
     if (right == NULL) {
       *superparent = NULL;
@@ -404,24 +411,33 @@ void zAVLFillVacancy (zAVLNode *origparent, zAVLNode **superparent,
 
     *superparent = right;
     right->parent = origparent;
-  }
-
-  else if (right == NULL) {
-    *superparent = left;
-    left->parent = origparent;
-  }
-
-  else if (left->depth >= right->depth) {
-    *superparent = left;
-    left->parent = origparent;
-    zAVLFillVacancy(left, &(left->right), left->right, right);
-    left->depth = CALC_DEPTH(left);
+    balnode = origparent;
   }
 
   else {
-    *superparent = right;
-    right->parent = origparent;
-    zAVLFillVacancy(right, &(right->left), right->left, left);
-    right->depth = CALC_DEPTH(right);
+    for (avlnode = left; avlnode->right != NULL; avlnode = avlnode->right);
+
+    if (avlnode == left) {
+      balnode = avlnode;
+    }
+    else {
+      balnode = avlnode->parent;
+      balnode->right = avlnode->left;
+      if (balnode->right != NULL)
+        balnode->right->parent = balnode;
+      avlnode->left = left;
+      left->parent = avlnode;
+    }
+
+    avlnode->right = right;
+    if (right != NULL)
+      right->parent = avlnode;
+    *superparent = avlnode;
+    avlnode->parent = origparent;
+  }
+
+  for (; balnode; balnode = nextbalnode) {
+    nextbalnode = balnode->parent;
+    zAVLRebalanceNode(avltree, balnode);
   }
 }

@@ -3,7 +3,7 @@
 # xAVLTree.h.sh: Header file generator for AVLTree library.
 # Copyright (C) 1998,2001  Michael H. Buselli
 # This is version 0.1.2 (alpha).
-# $Id: xAVLTree.h.sh,v 1.1 2001-03-04 19:43:06 cosine Exp $
+# $Id: xAVLTree.h.sh,v 1.2 2001-03-04 20:53:01 cosine Exp $
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -73,24 +73,35 @@ cat <<__EOF__ | \
 /* typedef the keytype */
 ++++ iAVLbegin ++++
 typedef long iAVLKey;
+
+/* Comparison function for integers is subtraction. */
+#define iAVLKey_cmp(tree, a, b) ((a) - (b))
 ++++ iAVLend ++++
 ++++ zAVLbegin ++++
 typedef const char *zAVLKey;
+
+/* Comparison function for strings is strcmp(). */
+#define zAVLKey_cmp(tree, a, b) (strcmp((a), (b)))
 ++++ zAVLend ++++
 ++++ gAVLbegin ++++
 typedef const void *gAVLKey;
 
 /*
- * Comparison function for gAVLTrees.  It is important that for any A,
- * B, C, and D objects that if AVLCompare(a, b) < 0, AVLCompare(b, c) <
- * 0, and AVLCompare(a, d) == 0, then the following are also true:
- * AVLCompare(a, c) < 0, AVLCompare(b, a) > 0, AVLCompare(d, a) == 0.
+ * Comparison function type for gAVLTrees.  It is important that for any
+ * A, B, C, and D objects that if AVLCompare(A, B) < 0, AVLCompare(B, C)
+ * < 0, and AVLCompare(A, D) == 0, then the following are also true:
+ * AVLCompare(A, C) < 0, AVLCompare(B, A) > 0, AVLCompare(D, A) == 0.
  * This code cannot verify that the function supplied by the user has
  * this property--this is the coder's responsibility--but the code will
- * by default perform some sanity checks and the cost of performance.
+ * by default perform some sanity checks at the cost of performance.
  * Turn the sanity checks off in avlconfig.h by defining AVL_NO_SANITY.
  */
 typedef int (*AVLCompare)(gAVLKey a, gAVLKey b);
+
+/* Comparison function for gAVLTrees is defined by the user for each
+ * individual gAVLTree.
+ */
+#define gAVLKey_cmp(tree, a, b) (((tree)->cmp)((a), (b)))
 ++++ gAVLend ++++
 
 

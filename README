@@ -58,8 +58,9 @@ When I do, I will produce text and html versions.
 
 PLATFORMS TESTED ON
 
-Platform:                     Comments:
-Linux 2.0.x/glibc 2/gcc       Compiles with no warnings or errors.
+Version:  Platform:                Comments:
+0.1.0     Linux 2.0.x/glibc 2/gcc  Compiles with no warnings or errors.
+0.1.2     OpenBSD 2.8/gcc          Compiles with no warnings or errors.
 
 ========================================================================
 
@@ -78,5 +79,10 @@ contain any bugs as it is.
 Version 0.1.1 (alpha) 2001-03-04:
      Updated contact information.  Added avltest.c for testing and
 demonstrating functions and usage.  Added a dumb Makefile.
+
+Version 0.1.2 (alpha) 2001-03-04:
+     Merged code files into generator programs to keep code for the two
+AVL tree types in sync.  Introduced a third AVL tree type called the
+gAVLTree, which allows generic items to be keys.
 
 ========================================================================

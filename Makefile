@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2001  Michael H. Buselli
 # This is version 0.1.1 (alpha).
-# $Id: Makefile,v 1.2 2001-03-04 19:43:06 cosine Exp $
+# $Id: Makefile,v 1.3 2001-03-04 20:53:01 cosine Exp $
 #
 # This file is released under the terms given in the LICENSE file
 # included in this package.
@@ -16,8 +16,14 @@ LDFLAGS =
 IAVLFILES = iAVLTree.h iAVLTree.o
 ZAVLFILES = zAVLTree.h zAVLTree.o
 GAVLFILES = gAVLTree.h
+TESTFILES = avltest
 
-all: $(IAVLFILES) $(ZAVLFILES) $(GAVLFILES) avltest
+FILES = $(IAVLFILES) $(ZAVLFILES) $(GAVLFILES) $(TESTFILES)
+
+all: $(FILES)
+
+clean:
+	rm -f $(FILES)
 
 # The following rules generate the header files.
 iAVLTree.h: xAVLTree.h.sh
@@ -28,6 +34,18 @@ zAVLTree.h: xAVLTree.h.sh
 
 gAVLTree.h: xAVLTree.h.sh
 	./xAVLTree.h.sh g > gAVLTree.h
+
+
+# These generate the source code files.
+iAVLTree.c: xAVLTree.c.sh
+	./xAVLTree.c.sh i > iAVLTree.c
+
+zAVLTree.c: xAVLTree.c.sh
+	./xAVLTree.c.sh z > zAVLTree.c
+
+gAVLTree.c: xAVLTree.c.sh
+	./xAVLTree.c.sh g > gAVLTree.c
+
 
 # Object files and executables.
 iAVLTree.o: iAVLTree.c iAVLTree.h

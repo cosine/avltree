@@ -2,7 +2,7 @@
  * avltest.c: Program to test the AVL Tree library.
  * Copyright (C) 2001  Michael H. Buselli
  * This is version 0.1.2 (alpha).
- * $Id: avltest.c,v 1.3 2001-03-04 21:15:47 cosine Exp $
+ * $Id: avltest.c,v 1.4 2001-03-04 22:17:49 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -32,34 +32,34 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "zAVLTree.h"
+#include "gAVLTree.h"
 
 #define BUFSIZE (256)
 
 
 /* Function to return the argument */
-const char *identity (void const *arg)
+const void *identity (void const *arg)
 {
-  return (const char *) arg;
+  return (const void *) arg;
 }
 
 
 /* Function to test iteration.  If check is non-zero, then we also call
  * AVLSearch and verify that we can find the item.
  */
-void iterate_test (zAVLTree *avltree, const int check)
+void iterate_test (gAVLTree *avltree, const int check)
 {
   int counter;
   char *item;
   char *checkout;
-  zAVLCursor avlcursor;
+  gAVLCursor avlcursor;
 
   counter = 1;
-  for (item = zAVLFirst(&avlcursor, avltree); item;
-       item = zAVLNext(&avlcursor))
+  for (item = (char *) gAVLFirst(&avlcursor, avltree); item;
+       item = (char *) gAVLNext(&avlcursor))
   {
     checkout = "";
-    if (check && zAVLSearch(avltree, item))
+    if (check && gAVLSearch(avltree, item))
       checkout = " Found";
     printf("%03d:%s [%s]\n", counter++, checkout, item);
   }
@@ -67,7 +67,7 @@ void iterate_test (zAVLTree *avltree, const int check)
 
 
 /* Function to test insert */
-void insert_test (zAVLTree *avltree, char const *input)
+void insert_test (gAVLTree *avltree, char const *input)
 {
   char *item;
   int rc;
@@ -77,7 +77,7 @@ void insert_test (zAVLTree *avltree, char const *input)
   assert(item);
 
   /* Do the insertion */
-  rc = zAVLInsert(avltree, item);
+  rc = gAVLInsert(avltree, item);
   switch (rc) {
     case 0: puts("Inserted"); break;
     case -1: puts("Insert Failed"); break;
@@ -88,7 +88,7 @@ void insert_test (zAVLTree *avltree, char const *input)
 
 
 /* Function to delete an entry; also demonstrates search */
-void delete_test (zAVLTree *avltree, char const *input)
+void delete_test (gAVLTree *avltree, char const *input)
 {
   char *item;
   int rc;
@@ -96,7 +96,7 @@ void delete_test (zAVLTree *avltree, char const *input)
   /* First locate the string so we can free() it later.  This wouldn't
    * be necessary if we don't need to free() the item.
    */
-  item = zAVLSearch(avltree, input);
+  item = (char *) gAVLSearch(avltree, input);
   if (!item) {
     puts("Not Found--Not Deleted");
     return;
@@ -105,7 +105,7 @@ void delete_test (zAVLTree *avltree, char const *input)
   /* Do the deletion.  Note that we pass the KEY not the ITEM to this
    * function.
    */
-  rc = zAVLDelete(avltree, input);
+  rc = gAVLDelete(avltree, input);
   switch (rc) {
     case 0: puts("Deleted"); break;
     case -1: puts("Delete Failed"); break;
@@ -119,9 +119,9 @@ main ()
 {
   char input[BUFSIZE];
   int rc;
-  zAVLTree *avltree;
+  gAVLTree *avltree;
 
-  avltree = zAVLAllocTree(identity);
+  avltree = gAVLAllocTree(identity, (gAVLCompare) strcmp);
 
   for (;;) {
     /* Print out a prompt. */
@@ -139,7 +139,7 @@ main ()
 
     /* Quit if necessary */
     if (!strcmp(input, "quit")) {
-      zAVLFreeTree(avltree, free);
+      gAVLFreeTree(avltree, free);
       exit(0);
     }
 

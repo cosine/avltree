@@ -2,7 +2,7 @@
  * avltest.c: Program to test the AVL Tree library.
  * Copyright (C) 2001  Michael H. Buselli
  * This is version 0.1.1 (alpha).
- * $Id: avltest.c,v 1.1 2001-03-04 05:52:18 cosine Exp $
+ * $Id: avltest.c,v 1.2 2001-03-04 05:56:54 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -61,7 +61,7 @@ void iterate_test (zAVLTree *avltree, const int check)
     checkout = "";
     if (check && zAVLSearch(avltree, item))
       checkout = " Found";
-    printf("%03d:%s [%s]%s\n", counter++, checkout, item);
+    printf("%03d:%s [%s]\n", counter++, checkout, item);
   }
 }
 

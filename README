@@ -12,11 +12,7 @@ through your entire AVL tree, in order by key, in O(n) time (the calls
 that allow the iterating take constant amortized time).
 
 If you find any bugs, or if you have any comments or suggestions, send
-them to <cosine@cosine.org>.  Or you can send me mail via the USPS to:
-
-Michael H. Buselli
-30051 N. Waukegan Rd. Apt. 103
-Lake Bluff, IL  60044-5412
+them to <cosine@cosine.org>.
 
 But before sending in a bug report, please check the AVLTree website
 http://www.cosine.com/project/AVLTree/ to make sure that you have the

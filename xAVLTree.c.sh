@@ -3,7 +3,6 @@
 # xAVLTree.c.sh: Source code generator for AVLTree library.
 # Copyright (C) 1998,2001  Michael H. Buselli
 # This is version 0.1.3 (alpha).
-# $Id: xAVLTree.c.sh,v 1.5 2001-06-07 06:58:28 cosine Exp $
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -19,12 +18,7 @@
 # License along with this library; if not, write to the Free
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-# The author of this library can be reached at the following address:
-# Michael H. Buselli
-# 30051 N. Waukegan Rd. Apt. 103
-# Lake Bluff, IL  60044-5412
-#
-# Or you can send email to <cosine@cosine.org>.
+# The author of this library can be reached by email at <cosine@cosine.org>.
 # The official web page for this product is:
 # http://www.cosine.org/project/AVLTree/
 #
@@ -42,7 +36,6 @@ cat <<__EOF__ | \
  * ${x}AVLTree.c: Source code for ${x}AVLTrees.
  * Copyright (C) 1998,2001  Michael H. Buselli
  * This is version 0.1.3 (alpha).
- * Generated from \$Id: xAVLTree.c.sh,v 1.5 2001-06-07 06:58:28 cosine Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -58,12 +51,7 @@ cat <<__EOF__ | \
  * License along with this library; if not, write to the Free
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * The author of this library can be reached at the following address:
- * Michael H. Buselli
- * 30051 N. Waukegan Rd. Apt. 103
- * Lake Bluff, IL  60044-5412
- *
- * Or you can send email to <cosine@cosine.org>.
+ * The author of this library can be reached by email at <cosine@cosine.org>.
  * The official web page for this product is:
  * http://www.cosine.org/project/AVLTree/
  */

@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2001, 2008  Michael H. Buselli
-# This is version 0.1.4 (alpha).
+# This is version 0.1.5 (alpha).
 #
 # This file is released under the terms given in the LICENSE file
 # included in this package.
@@ -9,7 +9,7 @@
 CC = gcc
 SED = sed
 GREP = grep
-CFLAGS = -ggdb
+CFLAGS = -ggdb -Wall
 LDFLAGS =
 
 IAVLFILES = iAVLTree.h iAVLTree.o

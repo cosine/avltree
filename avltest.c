@@ -1,7 +1,7 @@
 /*
  * avltest.c: Program to test the AVL Tree library.
  * Copyright (C) 2001, 2008  Michael H. Buselli
- * This is version 0.1.4 (alpha).
+ * This is version 0.1.5 (alpha).
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -109,7 +109,7 @@ void delete_test (gAVLTree *avltree, char const *input)
 
 
 /* Main Program */
-main ()
+int main (int argc, char *argv[])
 {
   char input[BUFSIZE];
   int rc;

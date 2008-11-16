@@ -74,6 +74,10 @@ Version:  Platform:                Comments:
 
 HISTORY
 
+Version 0.1.5 (alpha):
+     Fixed compile warnings, some of which actually prevent AVLTree
+from compiling on some stricter systems.
+
 Version 0.1.4 (alpha):
      Incorporated idea from Samhain's version of this code to have
 xAVLCloseSearchNode() also return information on if an exact match

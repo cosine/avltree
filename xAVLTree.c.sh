@@ -20,7 +20,7 @@
 #
 # The author of this library can be reached by email at <cosine@cosine.org>.
 # The official web page for this product is:
-# http://www.cosine.org/project/AVLTree/
+# http://cosine.org/project/AVLTree/
 #
 
 # Replacement variables
@@ -54,7 +54,7 @@ cat <<__EOF__ | \
  *
  * The author of this library can be reached by email at <cosine@cosine.org>.
  * The official web page for this product is:
- * http://www.cosine.org/project/AVLTree/
+ * http://cosine.org/project/AVLTree/
  */
 
 #include <stdlib.h>

@@ -98,6 +98,7 @@ typedef int (*gAVLCompare)(gAVLKey a, gAVLKey b);
 typedef struct _${x}AVLNode {
   ${x}AVLKey key;
   long depth;
+  long count;
   void *item;
   struct _${x}AVLNode *parent;
   struct _${x}AVLNode *left;
@@ -132,10 +133,13 @@ extern void ${x}AVLFreeTree\
  (${x}AVLTree *avltree, void (freeitem)(void *item));
 extern int ${x}AVLInsert (${x}AVLTree *avltree, void *item);
 extern void *${x}AVLSearch (${x}AVLTree const *avltree, ${x}AVLKey key);
+extern void *${x}AVLIndex (${x}AVLTree *avltree, long index);
 extern int ${x}AVLDelete (${x}AVLTree *avltree, ${x}AVLKey key);
 extern void *${x}AVLFirst\
  (${x}AVLCursor *avlcursor, ${x}AVLTree const *avltree);
 extern void *${x}AVLNext (${x}AVLCursor *avlcursor);
+extern void *${x}AVLSeek\
+ (${x}AVLCursor *avlcursor, ${x}AVLTree *avltree, long index);
 
 #endif
 __EOF__

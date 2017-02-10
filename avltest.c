@@ -1,7 +1,7 @@
 /*
  * avltest.c: Program to test the AVL Tree library.
  * Copyright (C) 2001, 2008  Michael H. Buselli
- * This is version 0.1.5 (alpha).
+ * This is version 0.1.6 (alpha).
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -57,6 +57,20 @@ void iterate_test (gAVLTree *avltree, const int check)
       checkout = " Found";
     printf("%03d:%s [%s]\n", counter++, checkout, item);
   }
+}
+
+
+/* Function to test index */
+void index_test (gAVLTree *avltree, int index)
+{
+  char *item;
+  char *checkout;
+
+  item = (char *) gAVLIndex(avltree, index);
+  if (item)
+    printf("%03d: Found [%s]\n", index, item);
+  else
+    printf("%03d: Not Found\n", index);
 }
 
 

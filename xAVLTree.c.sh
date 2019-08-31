@@ -212,6 +212,11 @@ void *${x}AVLSearch (${x}AVLTree const *avltree, ${x}AVLKey key)
  * the index is negative, count backwards from the end of the AVL tree.
  */
 void *${x}AVLIndex (${x}AVLTree *avltree, long index)
+{
+  return NULL; /* FIXME */
+}
+
+
 void *${x}AVLSeek (${x}AVLCursor *avlcursor, ${x}AVLTree *avltree, long index)
 {
   const ${x}AVLNode *avlnode;
